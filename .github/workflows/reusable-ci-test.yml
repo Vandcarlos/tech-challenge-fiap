@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  workflow_call:
+    inputs:
+      min-coverage:
+        type: string
+        default: '90'
+      upload-coverage:
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Environment
+        uses: ./.github/actions/setup-python-env # Chama a sua action local
+        with:
+          install-extras: 'tests'
+
+      - name: Run tests with coverage
+        run: pytest --cov=src --cov-report=xml --cov-fail-under=${{ inputs.min-coverage }}
+
+      - name: Upload coverage reports
+        if: ${{ inputs.upload-coverage }}
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml

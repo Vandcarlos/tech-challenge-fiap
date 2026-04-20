@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tech-challenge-fiap"
+version = "0.1.0"
+description = "FIAP Tech Challenge"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.0.0"
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+]
+notebooks = [
+    "jupyter>=1.0.0",
+    "jupyterlab>=4.0.0",
+    "ipykernel>=6.25.0",
+]
+dev = [
+    "black>=23.9.0",
+    "ruff>=0.0.292",
+    "mypy>=1.5.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=html --cov-report=term-missing --cov-fail-under=90 -v"
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == .__main__.:"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # Pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+]
+ignore = ["E501"]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.black]
+line-length = 100
+target-version = ["py313"]
+include = '\.pyi?$'

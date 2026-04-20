@@ -1,0 +1,30 @@
+name: Deploy to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-lint-test:
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+      min-coverage: '90'
+
+  deploy-main:
+    needs: build-lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Main/Production Environment
+        run: |
+          echo "🚀 Deploying to PRODUCTION environment..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployment timestamp: $(date)"
+
+      - name: Deploy step
+        run: |
+          echo "✅ Production deployment completed successfully"

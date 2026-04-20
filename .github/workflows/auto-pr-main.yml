@@ -1,0 +1,46 @@
+name: Auto PR to Main
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  run-ci:
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+      min-coverage: '90'
+
+  create-pr:
+    needs: run-ci
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/reusable-create-pr.yml
+    with:
+      head-branch: ${{ github.ref_name }}
+      base-branch: main
+      pr-title: 'Auto PR: ${{ github.ref_name }} → main'
+      pr-body: |
+        ## Automated Pull Request
+        This PR was automatically created from branch `${{ github.ref_name }}`.
+
+        **Release Ready:** All changes from dev are ready for production.
+
+  deploy-dev:
+    needs: run-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Dev Environment
+        run: |
+          echo "🚀 Deploying to DEV environment..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Deployment timestamp: $(date)"
+
+      - name: Deploy step
+        run: |
+          echo "✅ Dev deployment completed successfully"

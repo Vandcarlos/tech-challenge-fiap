@@ -1,0 +1,19 @@
+name: CI - Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      min-coverage:
+        type: string
+        default: '90'
+
+jobs:
+  lint:
+    uses: ./.github/workflows/reusable-ci-lint.yml
+
+  test:
+    needs: lint
+    uses: ./.github/workflows/reusable-ci-test.yml
+    with:
+      min-coverage: ${{ inputs.min-coverage }}
+      upload-coverage: true
