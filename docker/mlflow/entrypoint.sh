@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure required env vars are set
+: "${MLFLOW_BACKEND_STORE_URI:?MLFLOW_BACKEND_STORE_URI is not set}"
+: "${MLFLOW_REGISTRY_STORE_URI:?MLFLOW_REGISTRY_STORE_URI is not set}"
+: "${MLFLOW_ARTIFACT_ROOT:?MLFLOW_ARTIFACT_ROOT is not set}"
+
+echo "[MLFLOW] Backend store URI: ${MLFLOW_BACKEND_STORE_URI}"
+echo "[MLFLOW] Registry store URI: ${MLFLOW_REGISTRY_STORE_URI}"
+echo "[MLFLOW] Artifact root: ${MLFLOW_ARTIFACT_ROOT}"
+
+# Permite pular migrações no CI com MLFLOW_SKIP_DB_MIGRATIONS=true
+if [[ "${MLFLOW_SKIP_DB_MIGRATIONS:-false}" == "true" ]]; then
+  echo "[MLFLOW] Skipping DB migrations because MLFLOW_SKIP_DB_MIGRATIONS=${MLFLOW_SKIP_DB_MIGRATIONS}"
+else
+  echo "[MLFLOW] Running DB migrations..."
+  mlflow db upgrade "${MLFLOW_BACKEND_STORE_URI}"
+fi
+
+INTERNAL_PORT="${PORT:-5000}"
+echo "[MLFLOW] Starting MLflow server on port ${INTERNAL_PORT}..."
+mlflow server \
+  --host 0.0.0.0 \
+  --port "${INTERNAL_PORT}" \
+  --backend-store-uri "${MLFLOW_BACKEND_STORE_URI}" \
+  --registry-store-uri "${MLFLOW_REGISTRY_STORE_URI}" \
+  --serve-artifacts \
+  --artifacts-destination "${MLFLOW_ARTIFACT_ROOT}"
