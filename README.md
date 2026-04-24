@@ -7,6 +7,16 @@ Projeto de aula para o desafio FIAP Tech Challenge, com foco em:
 - linting e formatação
 - GitHub Actions para CI/CD
 
+## Machine Learning Canvas: Previsão de Churn
+
+| Campo | Descrição |
+|-------|-----------|
+| Value Proposition | Reduzir a perda de receita (Revenue Leakage) identificando clientes propensos a cancelar antes que o façam. |
+| Stakeholders | Time de Retenção (Marketing), Gerência Financeira, Engenharia de Dados. |
+| Métricas de Negócio | Redução da Taxa de Churn (%) e ROI das ações de retenção. |
+| Data Sources | Histórico de chamadas, tipo de contrato, tempo de casa, métodos de pagamento e demografia. |
+| SLOs (Técnico) | API com latência < 300ms; Disponibilidade 99%; Retreinamento mensal. |
+| Baseline | Regressão Logística simples (Scikit-Learn) comparada à Rede Neural MLP.
 ## Estrutura do Projeto
 
 - `src/` - código fonte do projeto
