@@ -1,0 +1,13 @@
+---
+
+name: mlops-platform
+
+include:
+  - docker-compose.postgres.yml
+  - docker-compose.mlflow.yml
+
+services: {}
+
+networks:
+  mlops:
+    driver: bridge
