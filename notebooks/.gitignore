@@ -1,2 +1,5 @@
 # Kaggle temp data
-data/
+data/*
+model/*
+
+!.gitkeep
