@@ -29,16 +29,5 @@
         "editor.formatOnSave": true
     },
     "python.testing.pytestEnabled": true,
-    "python.testing.unittestEnabled": false,
-    "[dockercompose]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2,
-        "editor.autoIndent": "advanced",
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": false,
-            "strings": true
-        }
-    },
-    "docker.comm"
+    "python.testing.unittestEnabled": false
 }
