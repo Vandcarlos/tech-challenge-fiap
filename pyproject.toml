@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "tech-challenge-fiap"
 version = "0.1.0"
 description = "FIAP Tech Challenge"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "python-dotenv>=1.0.0",
 
@@ -29,6 +29,7 @@ notebooks = [
     "scikit-learn==1.8.0",
     "numpy==2.4.4",
     "mlflow==3.11.1",
+    "torch==2.2.2"
 ]
 dev = [
     "black>=23.9.0",
