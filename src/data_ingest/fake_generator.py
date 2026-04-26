@@ -21,28 +21,23 @@ def generate_data(path: str):
     """Gera o esquema completo de 33 colunas idêntico ao Kaggle."""
     n_rows = np.random.randint(2000, 5000)
 
-    # Listas de categorias baseadas no seu sample
     cities = ["Los Angeles", "San Diego", "San Jose", "San Francisco", "Sacramento"]
-    offers = ["None", "Offer A", "Offer B", "Offer C", "Offer D", "Offer E"]
     reasons = ["Competitor made better offer", "Service dissatisfaction", "Price too high", "Moved"]
 
     data = {
-        # Identificadores e Localização
         "CustomerID": [f"{np.random.randint(1000, 9999)}-FAKE-{i:04d}" for i in range(n_rows)],
         "Count": [1] * n_rows,
         "Country": ["United States"] * n_rows,
         "State": ["California"] * n_rows,
         "City": np.random.choice(cities, n_rows),
         "Zip Code": np.random.randint(90001, 96162, n_rows),
-        "Lat Long": ["34.0522, -118.2437"] * n_rows,  # Mock fixo para simplificar
+        "Lat Long": ["34.0522, -118.2437"] * n_rows,
         "Latitude": np.random.uniform(32.5, 42.0, n_rows),
         "Longitude": np.random.uniform(-124.0, -114.0, n_rows),
-        # Demografia
         "Gender": np.random.choice(["Male", "Female"], n_rows),
         "Senior Citizen": np.random.choice(["No", "Yes"], n_rows),
         "Partner": np.random.choice(["Yes", "No"], n_rows),
         "Dependents": np.random.choice(["Yes", "No"], n_rows),
-        # Serviços (Onde o Spark estava dando erro de 'DSL')
         "Tenure Months": np.random.randint(0, 73, n_rows),
         "Phone Service": np.random.choice(["Yes", "No"], n_rows),
         "Multiple Lines": np.random.choice(["No", "Yes", "No phone service"], n_rows),
@@ -53,19 +48,16 @@ def generate_data(path: str):
         "Tech Support": np.random.choice(["Yes", "No", "No internet service"], n_rows),
         "Streaming TV": np.random.choice(["Yes", "No", "No internet service"], n_rows),
         "Streaming Movies": np.random.choice(["Yes", "No", "No internet service"], n_rows),
-        # Contrato e Faturamento
         "Contract": np.random.choice(["Month-to-month", "One year", "Two year"], n_rows),
         "Paperless Billing": np.random.choice(["Yes", "No"], n_rows),
         "Payment Method": np.random.choice(
             ["Electronic check", "Mailed check", "Bank transfer", "Credit card"], n_rows
         ),
         "Monthly Charges": np.random.uniform(18.0, 118.0, n_rows).round(2),
-        # Total Charges: Gerado como String para simular o comportamento real (incluindo o erro de espaço vazio)
         "Total Charges": [
             " " if np.random.random() < 0.01 else str(round(np.random.uniform(20, 8000), 2))
             for _ in range(n_rows)
         ],
-        # Churn Status
         "Churn Label": np.random.choice(["No", "Yes"], n_rows),
         "Churn Value": np.random.choice([0, 1], n_rows),
         "Churn Score": np.random.randint(0, 101, n_rows),
@@ -73,7 +65,7 @@ def generate_data(path: str):
         "Churn Reason": [
             np.random.choice(reasons) if val == "Yes" else None
             for val in np.random.choice(["No", "Yes"], n_rows)
-        ],  # Simplificado
+        ],
     }
 
     df = pd.DataFrame(data)
