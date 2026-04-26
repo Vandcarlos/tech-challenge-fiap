@@ -61,7 +61,8 @@ def _get_partition_arg(source_root: str) -> str:
         return partition_arg
 
     logger.info(
-        "⚠️ Parâmetro de partição não fornecido. Tentando inferir a última partição disponível em: %s",
+        "⚠️ Parâmetro de partição não fornecido."
+        " Tentando inferir a última partição disponível em: %s",
         source_root,
     )
 
