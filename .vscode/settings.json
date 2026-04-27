@@ -40,5 +40,6 @@
     "python.analysis.useLibraryCodeForTypes": true,
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
-    "ruff.nativeServer": true
+    "ruff.nativeServer": true,
+    "python.testing.pytestArgs": ["-s"]
 }
