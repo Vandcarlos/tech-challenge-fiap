@@ -9,11 +9,16 @@ import logging
 import os
 
 import pandas as pd
+import pandera.pyspark as pa
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import col, when
 from pyspark.sql.types import DoubleType, IntegerType, StringType, StructField, StructType
 
+from data_ingest import logger_util
+from data_ingest.domain import TelecomSource, TelecomTarget
+
 logger = logging.getLogger(__name__)
+logger_util.configure_logging()
 
 RAW_SCHEMA = StructType(
     [
@@ -61,15 +66,17 @@ MAPPING_COLUMNS = {
     "Total Charges": "total_charges",
 }
 
+FOOTER_SKIP_ROWS = 1
+
 
 def _get_pandas_df_from_excel(source_path: str) -> pd.DataFrame:
-    df_excel = pd.read_excel(source_path, skipfooter=1)
-
+    df_excel = pd.read_excel(source_path, skipfooter=FOOTER_SKIP_ROWS)
     df_excel.columns = df_excel.columns.str.strip()
+
+    TelecomSource.validate(df_excel)
 
     cols_to_use = [field.name for field in RAW_SCHEMA.fields]
     df_excel = df_excel[cols_to_use].copy()
-
     return df_excel
 
 
@@ -88,6 +95,7 @@ def _data_wrangling(df: DataFrame) -> DataFrame:
     return df_wrangled
 
 
+@pa.check_output(TelecomTarget)
 def transform_data(spark: SparkSession, source_path: str, file_name: str) -> DataFrame:
     """
     Transforma os dados lidos de um arquivo Parquet aplicando uma série de transformações.
@@ -107,7 +115,6 @@ def transform_data(spark: SparkSession, source_path: str, file_name: str) -> Dat
 
     logger.info("Reading Excel file via Pandas bridge...")
     df_excel = _get_pandas_df_from_excel(source)
-    df_excel.info()
 
     df = spark.createDataFrame(df_excel, schema=RAW_SCHEMA)
 
