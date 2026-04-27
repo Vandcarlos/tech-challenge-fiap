@@ -18,6 +18,8 @@ ingest = [
     "kagglehub==1.0.0",
     "pandas==2.2.3",
     "openpyxl==3.1.5",
+    "pandera[pyspark]==0.31.1",
+    "hypothesis==6.152.4",
 ]
 
 tests = [

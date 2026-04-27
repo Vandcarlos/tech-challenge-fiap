@@ -16,13 +16,14 @@ from data_ingest import arg_util, logger_util, transform
 logger_util.configure_logging()
 logger = logging.getLogger(__name__)
 
+SPARK_NAME = "LocalDataIngest"
 SOURCE_PATH_ARG = "SOURCE_PATH"
 DEST_PATH_ARG = "DESTINATION_PATH"
 PARTITION_ARG = "YEAR_MONTH"
 
 
 def _get_spark_session() -> SparkSession:
-    spark = SparkSession.builder.appName("LocalDataIngest").getOrCreate()
+    spark = SparkSession.builder.appName(SPARK_NAME).getOrCreate()
     return spark
 
 
@@ -113,12 +114,13 @@ def main():
         destination_path = _get_destination_path(year_month)
     except ValueError as e:
         logger.error("❌ Erro de configuração: %s", e)
-        return
+        raise
 
     try:
         _run_etl(spark, source_path, source_file_name, destination_path)
     except (IOError, RuntimeError) as e:
         logger.error("❌ Erro de execução ou IO: %s", e)
+        raise
     except Exception as e:
         logger.exception("❌ Erro inesperado: %s", str(e))
         raise
