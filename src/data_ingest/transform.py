@@ -70,7 +70,7 @@ FOOTER_SKIP_ROWS = 1
 
 
 def _get_pandas_df_from_excel(source_path: str) -> pd.DataFrame:
-    df_excel = pd.read_excel(source_path, skipfooter=FOOTER_SKIP_ROWS)
+    df_excel = pd.read_excel(source_path, skipfooter=FOOTER_SKIP_ROWS, dtype={"Total Charges": str})
     df_excel.columns = df_excel.columns.str.strip()
 
     TelecomSource.validate(df_excel)
