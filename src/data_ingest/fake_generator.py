@@ -58,12 +58,14 @@ def _generate_data() -> pd.DataFrame:
         "Moved",
     ]
 
+    city_options = ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "Fresno"]
+
     data = {
         "CustomerID": [f"{np.random.randint(1000, 9999)}-FAKE-{i:04d}" for i in range(n_rows)],
         "Count": [telecom_source.COUNT_VALUE] * n_rows,
         "Country": [telecom_source.COUNTRY_VALUE] * n_rows,
         "State": [telecom_source.STATE_VALUE] * n_rows,
-        "City": np.random.choice(telecom_source.CITY_OPTIONS, n_rows),
+        "City": np.random.choice(city_options, n_rows),
         "Zip Code": np.random.randint(
             telecom_source.ZIP_CODE_RANGE[0], telecom_source.ZIP_CODE_RANGE[1], n_rows
         ),
@@ -71,9 +73,9 @@ def _generate_data() -> pd.DataFrame:
         "Latitude": np.random.uniform(32.5, 42.0, n_rows),
         "Longitude": np.random.uniform(-124.0, -114.0, n_rows),
         "Gender": np.random.choice(telecom_source.GENDER_OPTIONS, n_rows),
-        "Senior Citizen": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
-        "Partner": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
-        "Dependents": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
+        "Senior Citizen": np.random.choice(telecom_source.SENIOR_CITIZEN_OPTIONS, n_rows),
+        "Partner": np.random.choice(telecom_source.PARTNER_OPTIONS, n_rows),
+        "Dependents": np.random.choice(telecom_source.DEPENDENTS_OPTIONS, n_rows),
         "Tenure Months": np.random.randint(0, 73, n_rows),
         "Phone Service": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
         "Multiple Lines": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
@@ -85,7 +87,7 @@ def _generate_data() -> pd.DataFrame:
         "Streaming TV": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
         "Streaming Movies": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
         "Contract": np.random.choice(telecom_source.CONTRACT_OPTIONS, n_rows),
-        "Paperless Billing": np.random.choice(telecom_source.BOOLEAN_OPTIONS, n_rows),
+        "Paperless Billing": np.random.choice(telecom_source.PAPERLESS_BILLING_OPTIONS, n_rows),
         "Payment Method": np.random.choice(telecom_source.PAYMENT_METHOD_OPTIONS, n_rows),
         "Monthly Charges": np.random.uniform(18.0, 118.0, n_rows).round(2),
         "Total Charges": [
