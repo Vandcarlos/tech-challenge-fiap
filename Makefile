@@ -1,11 +1,20 @@
 .DEFAULT_GOAL := help
 
 # --- Global vars ---
-VENV     = .venv
-BIN      = $(VENV)/bin
-PYENV_PY  = $(shell pyenv which python)
-PYTHON   = ./$(BIN)/python
-PIP      = $(PYTHON) -m pip
+VENV = .venv
+
+# Se estiver no GitHub Actions ou Container (CI=true), usa o Python do sistema e não exige venv
+ifeq ($(CI),true)
+	PYTHON   = python
+	PIP      = $(PYTHON) -m pip
+	VENV_DEP = # vazio
+else
+	BASE_PYTHON = $(shell command -v pyenv >/dev/null 2>&1 && pyenv which python || echo python3)
+	BIN         = $(VENV)/bin
+	PYTHON      = ./$(BIN)/python
+	PIP         = $(PYTHON) -m pip
+	VENV_DEP    = venv
+endif
 
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \
@@ -15,14 +24,13 @@ guard-%:
 
 .PHONY: help venv
 
-venv: ## Cria o virtualenv se não existir
-	@echo "🐍 Usando Python do pyenv: $(shell pyenv version-name)"
-	@test -d $(VENV) || $(PYENV_PY) -m venv $(VENV)
+venv: ## Cria o virtualenv se não existir (apenas local)
+	@echo "🐍 Configurando ambiente local..."
+	@test -d $(VENV) || $(BASE_PYTHON) -m venv $(VENV)
 	@$(PIP) install --upgrade pip setuptools wheel
 
 include scripts/make/*.mk
 
-.PHONY: help
 help: ## Mostra os comandos disponíveis
 	@echo "\033[1;34mUso:\033[0m make <comando> [VARIÁVEL=valor]"
 	@echo ""
