@@ -12,7 +12,7 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-python-env
         with:
-          install-extras: 'dev'
+          make-target: 'setup-tests'
 
       - name: Lint and Format with Ruff
         run: |
