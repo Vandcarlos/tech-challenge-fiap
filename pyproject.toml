@@ -10,17 +10,19 @@ requires-python = ">=3.12"
 dependencies = [
     "python-dotenv>=1.0.0",
     "mlflow==3.11.1",
-]
-
-[project.optional-dependencies]
-ingest = [
+    "onnx==1.21.0",
+    "onnxruntime==1.23.2",
     "pyspark==4.1.1",
     "kagglehub==1.0.0",
     "pandas==2.2.3",
     "openpyxl==3.1.5",
     "pandera[pyspark]==0.31.1",
     "hypothesis==6.152.4",
+    "numpy==1.26.4",
+    "torch==2.2.2",
 ]
+
+[project.optional-dependencies]
 
 tests = [
     "pytest>=7.4.0",
@@ -31,13 +33,10 @@ notebooks = [
     "jupyterlab>=4.0.0",
     "ipykernel>=6.25.0",
     "kagglehub==1.0.0",
-    "pandas==2.2.3",
     "openpyxl==3.1.5",
     "matplotlib==3.10.9",
     "seaborn==0.13.2",
     "scikit-learn==1.8.0",
-    "numpy==2.4.4",
-    "torch==2.2.2"
 ]
 dev = [
     "ruff>=0.0.292",
