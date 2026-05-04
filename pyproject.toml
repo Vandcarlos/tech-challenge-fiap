@@ -20,6 +20,7 @@ dependencies = [
     "hypothesis==6.152.4",
     "numpy==1.26.4",
     "torch==2.2.2",
+    "scikit-learn==1.8.0",
 ]
 
 [project.optional-dependencies]
@@ -36,7 +37,6 @@ notebooks = [
     "openpyxl==3.1.5",
     "matplotlib==3.10.9",
     "seaborn==0.13.2",
-    "scikit-learn==1.8.0",
 ]
 dev = [
     "ruff>=0.0.292",

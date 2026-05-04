@@ -5,6 +5,7 @@ import pandas as pd
 import pyspark.sql
 import pytest
 
+from domain.evaluation_metrics import EvaluationMetrics
 from services.ingest import extract, transform
 from services.train.dataset import Dataset
 from services.train.writer import Writer
@@ -64,6 +65,7 @@ def silver_data_build(bronze_data_build, spark_session):
 def gold_data_build(silver_data_build, tmp_path):
     def generate_data(
         df_base: pd.DataFrame | None = None,
+        metrics: EvaluationMetrics | None = None,
         target_path: Path | None = None,
         *,
         min_rows: int | None = None,
@@ -75,8 +77,11 @@ def gold_data_build(silver_data_build, tmp_path):
         assert df_base is not None
         dataset = Dataset(df_base)
 
+        if metrics is None:
+            metrics = EvaluationMetrics(0, 0, 0, 0, 0, 0)
+
         if target_path is not None:
-            Writer(target_path, tmp_path).write_data(dataset)
+            Writer(target_path, tmp_path).write_data(dataset, metrics)
 
         return dataset
 
