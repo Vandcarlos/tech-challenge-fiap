@@ -6,7 +6,7 @@ TRAIN_DATA_TARGET_PATH ?= './data/gold'##@ [train] Opcional: Caminho de destino 
 TRAIN_ARTIFACTS_TARGET_PATH ?= './models/train'##@ [train] Opcional: Caminho de destino dos artefados gerados, por padrão './models/train'.
 TRAIN_YEAR_MONTH ?= ##@ [train] Opcional: Partição YYYYMM. Se não fornecida, usa a ultima partição.
 train: ## Faz o treinamento dos dados de uma determianda partição (mês)
-	PYTHONPATH=src $(PYTHON) src/train/cli.py \
+	PYTHONPATH=src $(PYTHON) src/cli/train.py \
 		--SOURCE_PATH $(TRAIN_DATA_SOURCE_PATH) \
 		--TARGET_PATH $(TRAIN_DATA_TARGET_PATH) \
 		--ARTIFACTS_PATH $(TRAIN_ARTIFACTS_TARGET_PATH) \
