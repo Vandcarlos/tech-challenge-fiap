@@ -7,21 +7,21 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from .dataset import Dataset
 
 
-class Transformer:
+class Preprocessor:
     X_train: np.ndarray | spmatrix
     y_train: pd.Series
     X_val: np.ndarray | spmatrix
     y_val: pd.Series
     X_test: np.ndarray | spmatrix
     y_test: pd.Series
-    preprocessor: ColumnTransformer
+    transformer: ColumnTransformer
 
     def __init__(self, dataset: Dataset):
-        preprocessor = _build_preprocessor()
+        transformer = _build_transformer()
 
-        X_train_processed = preprocessor.fit_transform(dataset.X_train)
-        X_val_processed = preprocessor.transform(dataset.X_val)
-        X_test_processed = preprocessor.transform(dataset.X_test)
+        X_train_processed = transformer.fit_transform(dataset.X_train)
+        X_val_processed = transformer.transform(dataset.X_val)
+        X_test_processed = transformer.transform(dataset.X_test)
 
         self.X_train = X_train_processed
         self.y_train = dataset.y_train
@@ -29,10 +29,10 @@ class Transformer:
         self.y_val = dataset.y_val
         self.X_test = X_test_processed
         self.y_test = dataset.y_test
-        self.preprocessor = preprocessor
+        self.transformer = transformer
 
 
-def _build_preprocessor():
+def _build_transformer():
     categorical_features = [
         "gender",
         "senior_citizen",

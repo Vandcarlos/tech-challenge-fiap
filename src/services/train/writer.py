@@ -1,10 +1,12 @@
+import json
 import pickle
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from sklearn.compose import ColumnTransformer
+from domain.evaluation_metrics import EvaluationMetrics
 
 from .dataset import Dataset
+from .preprocessor import Preprocessor
 
 NAME_X_TRAIN = "x_train.parquet"
 NAME_Y_TRAIN = "y_train.parquet"
@@ -12,6 +14,8 @@ NAME_X_VAL = "x_val.parquet"
 NAME_Y_VAL = "y_val.parquet"
 NAME_X_TEST = "x_test.parquet"
 NAME_Y_TEST = "y_test.parquet"
+
+NAME_METRICS = "metrics.json"
 
 NAME_PREPROCESSOR = "preprocessor.pkl"
 NAME_MODEL = "churn_mlp_model.onnx"
@@ -47,6 +51,10 @@ class Writer:
         return self.data_target_path / NAME_Y_TEST
 
     @property
+    def metrics_path(self) -> Path:
+        return self.data_target_path / NAME_METRICS
+
+    @property
     def preprocessor_path(self) -> Path:
         return self.artifacts_target_path / NAME_PREPROCESSOR
 
@@ -54,24 +62,8 @@ class Writer:
     def model_path(self) -> Path:
         return self.artifacts_target_path / NAME_MODEL
 
-    def write_data(self, dataset: Dataset):
+    def write_data(self, dataset: Dataset, metrics: EvaluationMetrics):
         self.data_target_path.mkdir(parents=True, exist_ok=True)
-
-        print("dataset criado")
-        print("X", len(dataset.X_train), "\n")
-        print("Y", len(dataset.y_train), "\n")
-        print("X", len(dataset.X_val), "\n")
-        print("Y", len(dataset.y_val), "\n")
-        print("X", len(dataset.X_test), "\n")
-        print("Y", len(dataset.y_test), "\n")
-
-        print("paths")
-        print("X", self.x_train_data_path, "\n")
-        print("Y", self.y_train_data_path, "\n")
-        print("X", self.x_val_data_path, "\n")
-        print("Y", self.y_val_data_path, "\n")
-        print("X", self.x_test_data_path, "\n")
-        print("Y", self.y_test_data_path, "\n")
 
         dataset.X_train.to_parquet(self.x_train_data_path)
         dataset.y_train.to_frame().to_parquet(self.y_train_data_path)
@@ -82,11 +74,14 @@ class Writer:
         dataset.X_test.to_parquet(self.x_test_data_path)
         dataset.y_test.to_frame().to_parquet(self.y_test_data_path)
 
-    def write_artifacts(self, preprocessor: ColumnTransformer, model: bytes):
+        with open(self.metrics_path, "w", encoding="utf-8") as f:
+            json.dump(asdict(metrics), f, indent=4)
+
+    def write_artifacts(self, preprocessor: Preprocessor, model: bytes):
         self.artifacts_target_path.mkdir(parents=True, exist_ok=True)
 
         with open(self.preprocessor_path, "wb") as f:
-            pickle.dump(preprocessor, f)
+            pickle.dump(preprocessor.transformer, f)
 
         with open(self.model_path, "wb") as f:
             f.write(model)
