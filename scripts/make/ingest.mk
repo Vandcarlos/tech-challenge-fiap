@@ -7,7 +7,7 @@ INGEST_YEAR_MONTH ?= ##@ [ingest] Opcional: Partição YYYYMM. Se não fornecida
 INGEST_USE_FAKE_DATA ?= ##@ [ingest] Opcional: Cria dados sinteticos. Se não fornecida, usa dados reais.
 ingest: ## Faz a ingestão dos dados de uma determianda partição (mês)
 	PYTHONPATH=src $(PYTHON) src/cli/ingest.py \
-		--SOURCE_PATH $(SOURCE_PATH) \
+		--SOURCE_PATH $(INGEST_DATA_SOURCE_PATH) \
 		--TARGET_PATH $(INGEST_DATA_TARGET_PATH) \
 		$(if $(INGEST_YEAR_MONTH),--YEAR_MONTH $(INGEST_YEAR_MONTH),) \
 		$(if $(INGEST_USE_FAKE_DATA),--USE_FAKE_DATA $(INGEST_USE_FAKE_DATA),)
