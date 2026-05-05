@@ -1,14 +1,22 @@
 import io
+import logging
 from dataclasses import dataclass
 from typing import Any
 
+import mlflow
 import torch
 import torch.nn as torch_nn
 import torch.optim as torch_optim
 from torch.utils.data import DataLoader, TensorDataset
 
+from core.utils.logger_util import configure_logging
+from core.utils.mlflow_util import mlflow_start_run
+
 from .churn_mlp_module import ChurnMLPModule
 from .tensors import Tensors
+
+configure_logging()
+logger = logging.getLogger(__name__)
 
 TRAIN_BATCH_SIZE = 32
 TRAIN_NUM_EPOCHS = 100
@@ -30,9 +38,23 @@ class Trainer:
             shuffle=True,
         )
 
+    @mlflow_start_run(nested=True)
     def run_train(self) -> bytes:
+        mlflow.log_params(
+            {
+                "batch_size": TRAIN_BATCH_SIZE,
+                "max_epochs": TRAIN_NUM_EPOCHS,
+                "patience": LOSS_PATIENCE,
+                "device": self._device.type,
+                "input_dim": self._input_dim,
+                "optimizer": "Adam",
+                "learning_rate": 0.001,
+            }
+        )
         best_model_state = self.__run_loop()
         onnx_file = self.__generate_onnx(best_model_state)
+
+        mlflow.log_text(str(self.module), "model_summary.txt")
         return onnx_file
 
     @property
@@ -61,7 +83,9 @@ class Trainer:
                 epoch_loss += loss.item()
 
             avg_train_loss = epoch_loss / len(self._train_loader)
-            print(f"Epoch {epoch + 1}/{TRAIN_NUM_EPOCHS}, Loss: {avg_train_loss:.4f}")
+
+            mlflow.log_metric("train_loss", avg_train_loss, step=epoch)
+            logger.debug(f"Epoch {epoch + 1}/{TRAIN_NUM_EPOCHS}, Loss: {avg_train_loss:.4f}")
 
             module.eval()
             with torch.no_grad():
@@ -69,7 +93,9 @@ class Trainer:
                 y_val = self.tensors.y_val.to(self._device)
                 val_outputs = module(X_val)
                 val_loss = self._loss_criterion(val_outputs, y_val).item()
-                # mlflow.log_metric("val_loss", val_loss, step=epoch)
+
+                mlflow.log_metric("val_loss", val_loss, step=epoch)
+                logger.debug(f"Epoch {epoch + 1}/{TRAIN_NUM_EPOCHS}, val_loss: {val_loss:.4f}")
 
             if val_loss < best_loss:
                 best_loss = val_loss
@@ -81,6 +107,7 @@ class Trainer:
                     print(f"Early stopping na época {epoch}. Best Val Loss: {best_loss:.4f}")
                     break
 
+        mlflow.log_metric("best_val_loss", best_loss, step=epoch)
         return best_model_state
 
     def __generate_onnx(self, best_model_state: dict[str, Any]) -> bytes:
@@ -103,4 +130,6 @@ class Trainer:
             dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}},
         )
 
-        return buffer.getvalue()
+        onnx_bytes = buffer.getvalue()
+
+        return onnx_bytes
