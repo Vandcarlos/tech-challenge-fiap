@@ -8,6 +8,7 @@ def mock_mlflow():
     """Faz mock de todas as chamadas do MLflow automaticamente para todos os testes"""
     # Pular inicialização do ProductionPredictor em testes
     from src.services.prediction.predictor import ProductionPredictor
+
     ProductionPredictor.set_skip_setup(True)
 
     # Mock do MlflowClient
