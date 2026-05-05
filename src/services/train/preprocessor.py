@@ -6,6 +6,27 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from .dataset import Dataset
 
+CATEGORICAL_FEATURES = [
+    "gender",
+    "senior_citizen",
+    "partner",
+    "dependents",
+    "phone_service",
+    "multiple_lines",
+    "internet_service",
+    "online_security",
+    "online_backup",
+    "device_protection",
+    "tech_support",
+    "streaming_tv",
+    "streaming_movies",
+    "contract",
+    "paperless_billing",
+    "payment_method",
+]
+
+NUMERIC_FEATURES = ["tenure_months", "monthly_charges", "total_charges"]
+
 
 class Preprocessor:
     X_train: np.ndarray | spmatrix
@@ -33,30 +54,10 @@ class Preprocessor:
 
 
 def _build_transformer():
-    categorical_features = [
-        "gender",
-        "senior_citizen",
-        "partner",
-        "dependents",
-        "phone_service",
-        "multiple_lines",
-        "internet_service",
-        "online_security",
-        "online_backup",
-        "device_protection",
-        "tech_support",
-        "streaming_tv",
-        "streaming_movies",
-        "contract",
-        "paperless_billing",
-        "payment_method",
-    ]
-    numeric_features = ["tenure_months", "monthly_charges", "total_charges"]
-
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", StandardScaler(), numeric_features),
-            ("cat", OneHotEncoder(drop="first", handle_unknown="ignore"), categorical_features),
+            ("num", StandardScaler(), NUMERIC_FEATURES),
+            ("cat", OneHotEncoder(drop="first", handle_unknown="ignore"), CATEGORICAL_FEATURES),
         ]
     )
 
