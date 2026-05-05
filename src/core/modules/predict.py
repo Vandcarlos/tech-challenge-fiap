@@ -37,7 +37,7 @@ class PredictorModule:
 
         predictions = [
             Prediction(is_churn=bool(p_val == 1), confiance=float(p_prob))
-            for p_prob, p_val in zip(y_probs, y_preds)
+            for p_prob, p_val in zip(y_probs, y_preds, strict=False)
         ]
 
         return predictions
