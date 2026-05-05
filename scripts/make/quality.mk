@@ -16,5 +16,5 @@ lint: ## Roda ruff e mypy para verificar a qualidade do código
 MIN_COVERAGE ?= 90##@ [test] Opcional: Cobertura mínima para testes (padrão: 90)
 VERBOSE ?= false ##@ [test] Opcional: Se true, executa os testes em modo verbose (padrão: false)
 test: ## Roda os testes usando pytest e verifica se a cobertura é maior ou igual a MIN_COVERAGE
-	$(PYTEST) --cov-fail-under=$(MIN_COVERAGE) \
+	PYTHONPATH=. $(PYTEST) --cov=src --cov-report=xml --cov-fail-under=$(MIN_COVERAGE) \
 		$(if $(filter true,$(VERBOSE)),-vv,)
