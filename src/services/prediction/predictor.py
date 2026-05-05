@@ -9,11 +9,20 @@ class ProductionPredictor:
     _instance = None
     _module: PredictorModule | None
     _metadata: dict[str, str | None] = {}
+    _skip_setup = False  # Flag para pular setup em testes
+
+    @classmethod
+    def set_skip_setup(cls, skip: bool = True):
+        """Método para pular a inicialização em testes"""
+        cls._skip_setup = skip
+        if skip:
+            cls._instance = None  # Reset instance
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._setup_production_assets()
+            if not cls._skip_setup:
+                cls._setup_production_assets()
         return cls._instance
 
     @classmethod
