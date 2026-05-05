@@ -41,5 +41,5 @@
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
     "ruff.nativeServer": true,
-    "python.testing.pytestArgs": ["-s"]
+    "python.testing.pytestArgs": ["-s", "--cov=src"]
 }

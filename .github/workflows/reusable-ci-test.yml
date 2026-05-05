@@ -22,7 +22,9 @@ jobs:
           make-target: 'setup-tests'
 
       - name: Run tests with coverage
-        run: pytest --cov=src --cov-report=xml --cov-fail-under=${{ inputs.min-coverage }}
+        run: make test MIN_COVERAGE=${{ inputs.min-coverage }}
+        env:
+          PYTHONPATH: .
 
       - name: Upload coverage reports
         if: ${{ inputs.upload-coverage }}
