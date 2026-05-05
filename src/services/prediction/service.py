@@ -31,16 +31,16 @@ class PredictionService:
             predictions = self.predictor.predict(df)
 
             return predictions
-        except ValueError:
+        except ValueError as e:
             raise HTTPException(
                 status_code=503,
                 detail="Prediction engine is currently unavailable (Model not loaded).",
-            )
-        except Exception:
+            ) from e
+        except Exception as e:
             raise HTTPException(
                 status_code=500,
                 detail="Error.",
-            )
+            ) from e
 
     def get_model_metadata(self) -> dict:
         """Exporta os metadados do modelo que está servindo a aplicação."""
