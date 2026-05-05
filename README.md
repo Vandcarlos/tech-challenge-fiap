@@ -106,10 +106,10 @@ make setup-project
 ### 3. Setup de Serviços Externos
 ```bash
 # Inicia MLflow e PostgreSQL
-docker-compose up -d mlflow postgres
+docker-compose -f devtools/docker-compose.yml up -d
 
 # Verifica se os serviços estão rodando
-docker-compose ps
+docker-compose -f devtools/docker-compose.yml ps
 ```
 
 ### 4. Configuração de Ambiente
@@ -120,8 +120,14 @@ cp .env.example .env
 # Edite as variáveis conforme necessário
 # MLFLOW_HOST=http://localhost
 # MLFLOW_PORT=5500
+# MLFLOW_BACKEND_STORE_URI=postgresql+psycopg2://mlflow_user:mlflow_pass@postgres:5432/mlflow_db
 # etc.
 ```
+
+### 5. Acessos aos Serviços
+- **MLflow UI**: http://localhost:5500
+- **pgAdmin**: http://localhost:5050 (admin@admin.com / admin)
+- **API da Aplicação**: http://localhost:8888
 
 ### 5. Setup de Desenvolvimento Completo
 ```bash
@@ -208,6 +214,17 @@ curl -X POST http://localhost:8888/predict \
   }'
 ```
 
+### Testes com Insomnia
+
+Para facilitar os testes da API, importe o arquivo `devtools/Insomnia.yaml` no Insomnia:
+
+1. Abra o Insomnia
+2. File → Import Data → From File
+3. Selecione `devtools/Insomnia.yaml`
+4. Configure a variável `base_url` para `http://localhost:8888`
+
+As requisições de exemplo estarão disponíveis na collection "FIAP_Tech_Challenge-Churn_Prediction".
+
 ## Model Card
 
 Para informações completas sobre o modelo (performance, limitações, vieses), consulte [docs/model_card.md](docs/model_card.md).
@@ -258,3 +275,4 @@ Para evitar duplicação, a pipeline usa reusable workflows no diretório `.gith
 - Modelos treinados ficam em `models/train/` e modelos de produção em `models/predict/`
 - Use Docker Compose para serviços auxiliares (MLflow, PostgreSQL)
 - A arquitetura híbrida permite processamento batch eficiente e inferência real-time
+- Configure as variáveis de ambiente do PostgreSQL para persistência do MLflow
