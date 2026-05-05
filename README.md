@@ -243,6 +243,12 @@ Esse projeto usa extras no `pyproject.toml`:
 
 O `Makefile` instala `.[dev,tests,notebooks]` em `make setup-dev`.
 
+### Qualidade de Código
+
+- **Lint rápido**: `make lint` - executa ruff (lint + format check) em ~0.1s
+- **Type check**: `make type-check` - executa mypy para verificação de tipos (mais lento)
+- **Testes**: `make test` - executa pytest com cobertura
+
 ## Documentação
 
 - **[Model Card](docs/model_card.md)**: Performance, limitações e vieses do modelo

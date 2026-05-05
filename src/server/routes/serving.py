@@ -68,4 +68,4 @@ async def predict(request: PredictRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Erro interno ao processar a predição.",
-        )
+        ) from e
