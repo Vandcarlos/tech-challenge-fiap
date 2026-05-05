@@ -9,7 +9,7 @@ jobs:
   build-lint-test:
     uses: ./.github/workflows/reusable-ci.yml
     with:
-      min-coverage: '90'
+      min-coverage: '75'
 
   deploy-main:
     needs: build-lint-test

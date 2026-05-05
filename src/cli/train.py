@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from core.utils import arg_util, logger_util
+from core.utils import arg_util, datalake_util, logger_util
 from services.train.service import TrainService
 
 logger_util.configure_logging()
@@ -44,11 +44,9 @@ class InputArgs:
         self._artifacts_target_path = Path(artifacts_target_path)
 
         year_month = arg_util.get_arg(YEAR_MONTH_ARG)
-
-        if year_month is None:
-            year_month = arg_util.define_year_month(self._data_source_path)
-
-        self._year_month = year_month
+        self._year_month = datalake_util.year_month_to_silver_layer(
+            year_month, self._data_source_path
+        )
 
 
 def main():

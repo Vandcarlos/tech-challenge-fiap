@@ -15,5 +15,8 @@ def mock_mlflow():
         patch("mlflow.log_artifact"),
         patch("mlflow.log_dict"),
         patch("mlflow.log_text"),
+        patch("mlflow.onnx.log_model") as mock_log,
     ):
+        mock_info = mock_log.return_value
+        mock_info.registered_model_version = "1"
         yield
