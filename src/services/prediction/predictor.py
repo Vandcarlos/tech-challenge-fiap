@@ -8,7 +8,7 @@ from src.core.modules import PredictorModule
 class ProductionPredictor:
     _instance = None
     _module: PredictorModule | None
-    _metadata = {}
+    _metadata: dict[str, str | None] = {}
 
     def __new__(cls):
         if cls._instance is None:

@@ -16,7 +16,7 @@ if __name__ == "__main__":
         log_level = LOG_LEVELS["debug"]
         reload = True
     else:
-        log_level = None
+        log_level = LOG_LEVELS["info"]  # Default log level
         reload = False
 
     uvicorn.run(
