@@ -7,6 +7,7 @@ else
 	PYTEST   = $(BIN)/pytest
 endif
 
+PYTHONPATH=. $(PYTEST) --cov=src --cov-report=xml --cov-fail-under=$(MIN_COVERAGE)
 .PHONY: lint test
 
 lint: ## Roda ruff para verificar a qualidade do código (mypy desabilitado temporariamente para performance)
