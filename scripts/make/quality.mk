@@ -1,8 +1,13 @@
 RUFF 	 = $(BIN)/ruff
 MYPY 	 = $(BIN)/mypy
-PYTEST   = $(BIN)/pytest
 
+ifeq ($(CI),true)
+	PYTEST   = pytest
+else
+	PYTEST   = $(BIN)/pytest
+endif
 
+PYTHONPATH=. $(PYTEST) --cov=src --cov-report=xml --cov-fail-under=$(MIN_COVERAGE)
 .PHONY: lint test
 
 lint: ## Roda ruff e mypy para verificar a qualidade do código
