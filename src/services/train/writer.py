@@ -4,6 +4,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from domain.evaluation_metrics import EvaluationMetrics
+from src import env
 
 from .dataset import Dataset
 from .preprocessor import Preprocessor
@@ -14,11 +15,6 @@ NAME_X_VAL = "x_val.parquet"
 NAME_Y_VAL = "y_val.parquet"
 NAME_X_TEST = "x_test.parquet"
 NAME_Y_TEST = "y_test.parquet"
-
-NAME_METRICS = "metrics.json"
-
-NAME_PREPROCESSOR = "preprocessor.pkl"
-NAME_MODEL = "churn_mlp_model.onnx"
 
 
 @dataclass
@@ -52,15 +48,15 @@ class Writer:
 
     @property
     def metrics_path(self) -> Path:
-        return self.data_target_path / NAME_METRICS
-
-    @property
-    def preprocessor_path(self) -> Path:
-        return self.artifacts_target_path / NAME_PREPROCESSOR
+        return self.data_target_path / env.MLFLOW_METRICS_NAME
 
     @property
     def model_path(self) -> Path:
-        return self.artifacts_target_path / NAME_MODEL
+        return self.artifacts_target_path / env.MLFLOW_MODEL_NAME
+
+    @property
+    def preprocessor_path(self) -> Path:
+        return self.artifacts_target_path / env.MLFLOW_PREPROCESSOR_NAME
 
     def write_data(self, dataset: Dataset, metrics: EvaluationMetrics):
         self.data_target_path.mkdir(parents=True, exist_ok=True)
@@ -80,8 +76,8 @@ class Writer:
     def write_artifacts(self, preprocessor: Preprocessor, model: bytes):
         self.artifacts_target_path.mkdir(parents=True, exist_ok=True)
 
-        with open(self.preprocessor_path, "wb") as f:
-            pickle.dump(preprocessor.transformer, f)
-
         with open(self.model_path, "wb") as f:
             f.write(model)
+
+        with open(self.preprocessor_path, "wb") as f:
+            pickle.dump(preprocessor.transformer, f)
