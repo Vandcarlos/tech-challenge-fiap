@@ -1,9 +1,7 @@
 """Utils para parsing de argumentos de linha de comando."""
 
 import logging
-import os
 import sys
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -19,19 +17,3 @@ def get_arg(name: str) -> str | None:
             return sys.argv[i + 1]
 
     return None
-
-
-def define_year_month(path: Path) -> str:
-    logger.info(
-        "⚠️ Parâmetro de data não fornecido. Tentando inferir a última data disponível em: %s",
-        path,
-    )
-
-    year_months = [d for d in os.listdir(path) if os.path.isdir(path / d)]
-
-    if not year_months:
-        logger.error("❌ Nenhuma data encontrada em: %s", path)
-        raise ValueError("Nenhuma data encontrada encontrada.")
-
-    year_month = sorted(year_months)[-1]
-    return year_month

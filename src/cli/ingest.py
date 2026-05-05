@@ -6,12 +6,11 @@ Módulo de transformação de dados localmente.
 """
 
 import logging
-from datetime import datetime
 from pathlib import Path
 
 from pyspark.sql import SparkSession
 
-from core.utils import arg_util, logger_util
+from core.utils import arg_util, datalake_util, logger_util
 from services.ingest.service import IngestService
 
 logger_util.configure_logging()
@@ -58,11 +57,7 @@ class InputArgs:
         self._data_target_path = Path(data_target)
 
         year_month = arg_util.get_arg(YEAR_MONTH_ARG)
-
-        if year_month is None:
-            year_month = datetime.now().strftime("%Y%m")
-
-        self._year_month = year_month
+        self._year_month = datalake_util.year_month_to_bronze_layer(year_month)
 
         self.use_fake_data = arg_util.get_arg(USE_FAKE_DATA_ARG) == "True"
 
