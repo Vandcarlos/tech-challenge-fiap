@@ -27,7 +27,7 @@ def test_train(silver_data_build, monkeypatch, tmp_path):
 
     assert len(target_metric) == 1
 
-    model_files_path = os.path.join(artifacts_target_path, "churn_mlp_model.onnx")
+    model_files_path = os.path.join(artifacts_target_path, "churn_mlp_model")
     model_files = glob.glob(model_files_path)
     assert len(model_files) == 1
 
