@@ -1,6 +1,7 @@
 """Extrai os dados da kaggle e salva raw na camada bronze"""
 
 import logging
+from abc import ABC, abstractmethod
 from pathlib import Path
 
 import kagglehub
@@ -15,9 +16,11 @@ logger = logging.getLogger(__name__)
 DATASET_KAGGLE_ID = "yeanzc/telco-customer-churn-ibm-dataset"
 
 
-class Extracter:
+class Extracter(ABC):
+    @abstractmethod
     @pa.check_output(TelecomPandasIn)
-    def run_extract(self, output_path: Path) -> Path: ...
+    def run_extract(self, output_path: Path) -> Path:
+        "Contrato de extração de dados."
 
 
 class ExtracterImp(Extracter):

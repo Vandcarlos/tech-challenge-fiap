@@ -63,7 +63,7 @@ def test_main(pass_year_month_arg, use_fake_arg, spark_session, monkeypatch, tmp
 def test_input_errors(data_source_path, data_target_path, monkeypatch):
     argv = build_argv(data_source_path, data_target_path)
     monkeypatch.setattr(sut.arg_util.sys, "argv", argv)
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         sut.main()
 
 
