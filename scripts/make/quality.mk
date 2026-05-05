@@ -20,6 +20,7 @@ lint: ## Roda ruff para verificar a qualidade do código (mypy desabilitado temp
 type-check: ## Roda apenas mypy para verificação de tipos (mais lento)
 	@echo "🧪 Rodando Type Check..."
 	MYPYPATH=typings $(MYPY) src
+
 VERBOSE ?= false ##@ [test] Opcional: Se true, executa os testes em modo verbose (padrão: false)
 test: ## Roda os testes usando pytest e verifica se a cobertura é maior ou igual a MIN_COVERAGE
 	PYTHONPATH=. $(PYTEST) --cov=src --cov-report=xml --cov-fail-under=$(MIN_COVERAGE) \
