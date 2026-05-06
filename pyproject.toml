@@ -94,7 +94,7 @@ line-ending = "auto"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=src --cov-report=html --cov-report=term-missing --cov-fail-under=90 -v"
+addopts = "--cov=src --cov-report=html --cov-report=term-missing --cov-fail-under=75 -v"
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"

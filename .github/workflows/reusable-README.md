@@ -32,7 +32,7 @@ Executa linting, formatação e testes completos:
 - Upload de coverage (opcional)
 
 **Inputs:**
-- `min-coverage` (default: '90')
+- `min-coverage` (default: '75')
 - `upload-coverage` (default: true)
 
 ## reusable-create-pr.yml

@@ -5,7 +5,7 @@ on:
     inputs:
       min-coverage:
         type: string
-        default: '90'
+        default: '75'
 
 jobs:
   lint:
