@@ -1,3 +1,4 @@
+from contextlib import ExitStack
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -20,23 +21,37 @@ def mock_mlflow():
     # Mock das funções de artifacts
     mock_artifacts = MagicMock()
 
-    with (
-        patch("mlflow.start_run"),
-        patch("mlflow.log_param"),
-        patch("mlflow.log_params"),
-        patch("mlflow.log_metric"),
-        patch("mlflow.log_metrics"),
-        patch("mlflow.log_artifact"),
-        patch("mlflow.log_dict"),
-        patch("mlflow.log_text"),
-        patch("mlflow.onnx.log_model") as mock_log,
-        patch("mlflow.tracking.MlflowClient", return_value=mock_client),
-        patch("mlflow.artifacts", mock_artifacts),
-        patch("mlflow.artifacts.download_artifacts"),
-        patch("mlflow.set_tracking_uri"),
-        patch("mlflow.set_experiment"),
-        patch("mlflow.set_tag"),
-    ):
+    with ExitStack() as stack:
+        mock_log = stack.enter_context(patch("mlflow.onnx.log_model"))
+        stack.enter_context(patch("mlflow.start_run"))
+        stack.enter_context(patch("mlflow.log_param"))
+        stack.enter_context(patch("mlflow.log_params"))
+        stack.enter_context(patch("mlflow.log_metric"))
+        stack.enter_context(patch("mlflow.log_metrics"))
+        stack.enter_context(patch("mlflow.log_artifact"))
+        stack.enter_context(patch("mlflow.log_dict"))
+        stack.enter_context(patch("mlflow.log_text"))
+        stack.enter_context(patch("mlflow.tracking.MlflowClient", return_value=mock_client))
+        stack.enter_context(patch("services.train.service.MlflowClient", return_value=mock_client))
+        stack.enter_context(
+            patch("src.services.train.service.MlflowClient", return_value=mock_client)
+        )
+        stack.enter_context(patch("core.utils.mlflow_util.MlflowClient", return_value=mock_client))
+        stack.enter_context(
+            patch("src.core.utils.mlflow_util.MlflowClient", return_value=mock_client)
+        )
+        stack.enter_context(
+            patch("services.prediction.predictor.MlflowClient", return_value=mock_client)
+        )
+        stack.enter_context(
+            patch("src.services.prediction.predictor.MlflowClient", return_value=mock_client)
+        )
+        stack.enter_context(patch("mlflow.artifacts", mock_artifacts))
+        stack.enter_context(patch("mlflow.artifacts.download_artifacts"))
+        stack.enter_context(patch("mlflow.set_tracking_uri"))
+        stack.enter_context(patch("mlflow.set_experiment"))
+        stack.enter_context(patch("mlflow.set_tag"))
+
         mock_info = mock_log.return_value
         mock_info.registered_model_version = "1"
         yield
