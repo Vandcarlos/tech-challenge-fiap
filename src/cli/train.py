@@ -3,6 +3,7 @@ from pathlib import Path
 
 from core.utils import arg_util, datalake_util, logger_util
 from services.train.service import TrainService
+from src.configs import configure_app
 
 logger_util.configure_logging()
 logger = logging.getLogger(__name__)
@@ -59,6 +60,7 @@ def main():
         raise e
 
     try:
+        configure_app()
         train_service = TrainService()
         train_service.train(
             data_source_path=input_args.data_source_path,

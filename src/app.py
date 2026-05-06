@@ -2,11 +2,13 @@ import uvicorn
 from uvicorn.config import LOG_LEVELS
 
 from src import env
+from src.configs import configure_app
 from src.core.utils import arg_util
 from src.server import create_app
 
 DEBUG_ARG = "DEBUG"
 
+configure_app()
 app = create_app()
 
 if __name__ == "__main__":
