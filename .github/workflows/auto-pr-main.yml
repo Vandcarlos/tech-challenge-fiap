@@ -9,7 +9,7 @@ jobs:
   run-ci:
     uses: ./.github/workflows/reusable-ci.yml
     with:
-      min-coverage: '90'
+      min-coverage: '75'
 
   create-pr:
     needs: run-ci

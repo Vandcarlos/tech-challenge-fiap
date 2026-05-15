@@ -7,18 +7,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Environment
-        uses: ./.github/actions/setup-python-env # Chama a sua action local
+        uses: ./.github/actions/setup-python-env
         with:
-          install-extras: 'dev'
+          make-target: 'setup'
 
-      - name: Lint with Ruff
-        run: ruff check src tests
-
-      - name: Format check with Black
-        run: black --check src tests
+      - name: Lint and Format with Ruff
+        run: |
+          ruff check src tests
+          ruff format --check src tests
 
       - name: Type checking with Mypy
-        run: mypy src || true
+        env:
+          MYPYPATH: ./typings
+        run: mypy src

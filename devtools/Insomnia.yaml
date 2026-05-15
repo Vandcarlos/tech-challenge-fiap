@@ -1,0 +1,294 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: FIAP_Tech_Challenge-Churn_Prediction
+meta:
+  id: wrk_8eab296e4e6f49958da5a1dcedee7cfe
+  created: 1778002209832
+  modified: 1778002225977
+  description: ""
+collection:
+  - url: ""
+    name: New Request
+    meta:
+      id: req_93065d7f953645669793cd5262741976
+      created: 1778002485365
+      modified: 1778002485365
+      isPrivate: false
+      description: ""
+      sortKey: -1778002485365
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.5.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - name: operation
+    meta:
+      id: fld_ae118185374645dc8008c6eff69be25c
+      created: 1778002233024
+      modified: 1778002258490
+      sortKey: -1778002233024
+      description: ""
+    children:
+      - url: "{{ _.api_url }}/ops/ingest"
+        name: ingest
+        meta:
+          id: req_8571298999ee4601b496eb41d3dad034
+          created: 1778004502975
+          modified: 1778004641236
+          isPrivate: false
+          description: ""
+          sortKey: -1778004509042
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api_url }}/ops/train"
+        name: train
+        meta:
+          id: req_3bb7320c35974caca53d31ffefbf7019
+          created: 1778004678610
+          modified: 1778005814616
+          isPrivate: false
+          description: ""
+          sortKey: -1778004231496.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"year_month": "202605"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: monitor
+    meta:
+      id: fld_55d4516a068042038e385d99a2e60832
+      created: 1778002246716
+      modified: 1778002273191
+      sortKey: -1778002266873
+      description: ""
+    children:
+      - url: "{{ _.api_url }}/monitor/health"
+        name: health
+        meta:
+          id: req_5ba79d70d8cb435f922a75b707c86944
+          created: 1778002295781
+          modified: 1778002427798
+          isPrivate: false
+          description: ""
+          sortKey: -1778002295781
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api_url }}/monitor/metrics"
+        name: metrics
+        meta:
+          id: req_beea5fae551e4c16b876edee1d70b51e
+          created: 1778002437273
+          modified: 1778002439232
+          isPrivate: false
+          description: ""
+          sortKey: -1778002295731
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api_url }}/monitor/mlflow"
+        name: mlflow
+        meta:
+          id: req_eb22dab355f1459589dc17fd0abc7231
+          created: 1778002454871
+          modified: 1778002457390
+          isPrivate: false
+          description: ""
+          sortKey: -1778002295681
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api_url }}/monitor/model-status"
+        name: model-status
+        meta:
+          id: req_877e9963329a4e4ebe88abd796286d34
+          created: 1778002492714
+          modified: 1778002495387
+          isPrivate: false
+          description: ""
+          sortKey: -1778002295631
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.api_url }}/monitor/latest-training"
+        name: latest-training
+        meta:
+          id: req_7154e8e035614732801e8d1b14c116f3
+          created: 1778002512758
+          modified: 1778002516671
+          isPrivate: false
+          description: ""
+          sortKey: -1778002295581
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: serving
+    meta:
+      id: fld_d5f6fc5d890442de85591122f9b2025f
+      created: 1778002266773
+      modified: 1778002281147
+      sortKey: -1778002209741
+      description: ""
+    children:
+      - url: "{{ _.api_url }}/predict"
+        name: predict
+        meta:
+          id: req_5a33ca8cf6e34500a8c1b15ae250d39a
+          created: 1778003951762
+          modified: 1778005792589
+          isPrivate: false
+          description: ""
+          sortKey: -1778003953951
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "data": [
+                {
+                  "churn_value": 0,
+                  "contract": "Month-to-month",
+                  "dependents": "No",
+                  "device_protection": "No",
+                  "gender": "Female",
+                  "internet_service": "Fiber optic",
+                  "monthly_charges": 80.85,
+                  "multiple_lines": "No",
+                  "online_backup": "Yes",
+                  "online_security": "No",
+                  "paperless_billing": "Yes",
+                  "partner": "Yes",
+                  "payment_method": "Electronic check",
+                  "phone_service": "Yes",
+                  "senior_citizen": "No",
+                  "streaming_movies": "No",
+                  "streaming_tv": "Yes",
+                  "tech_support": "No",
+                  "tenure_months": 12,
+                  "total_charges": 970.2
+                }
+              ]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_7feffd5d60f1b8e69df7d0c944fa18c29f9f1456
+    created: 1778002209836
+    modified: 1778002209836
+environments:
+  name: Base Environment
+  meta:
+    id: env_7feffd5d60f1b8e69df7d0c944fa18c29f9f1456
+    created: 1778002209834
+    modified: 1778002368058
+    isPrivate: false
+  data:
+    api_url: http://localhost:8888
